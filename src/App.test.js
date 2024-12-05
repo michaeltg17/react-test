@@ -4,7 +4,6 @@ import DefaultLabel from "./DefaultLabel";
 import "@testing-library/jest-dom";
 import React from 'react';
 import {debug} from 'jest-preview'
-//import "./styles2.scss";
 import fs from "fs";
 import path from "path";
 import App from "./App";
