@@ -1,6 +1,7 @@
 import "./styles.css";
 import DangerLabel from "./DangerLabel";
 import DefaultLabel from "./DefaultLabel";
+import React from 'react';
 
 export default function App() {
   return (

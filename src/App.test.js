@@ -1,20 +1,31 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import DangerLabel from "./DangerLabel";
 import DefaultLabel from "./DefaultLabel";
 import "@testing-library/jest-dom";
 import React from 'react';
 import {debug} from 'jest-preview'
-import "./styles.css";
+//import "./styles2.scss";
 import fs from "fs";
 import path from "path";
+import App from "./App";
+
+describe("App", () => {
+  it("Is rendered with expected content", () => {
+    render(<App />);
+    const dangerLabel = screen.queryByText('DangerLabel');
+    const defaultLabel = screen.queryByText('DefaultLabel');
+    expect(dangerLabel).toBeInTheDocument();
+    expect(defaultLabel).toBeInTheDocument();
+  });
+});
 
 describe("DangerLabel", () => {
   const dangerLabel = <DangerLabel visible>TESTE</DangerLabel>;
-  it("should have class = -danger", () => {
+  it("Has class -danger", () => {
     const { container } = render(dangerLabel);
     expect(container.firstChild).toHaveClass("-danger");
   });
-  it("should have bg color = #e74c3c", () => {
+  it("Has background-color #e74c3c", () => {
     // const style = document.createElement("style");
     // style.innerHTML = `
     //   .-danger {
@@ -40,7 +51,7 @@ describe("DangerLabel", () => {
 
 describe("DefaultLabel", () => {
   const defaultLabel = <DefaultLabel visible>TESTE</DefaultLabel>;
-  it("should have default bg color", () => {
+  it("Has default background-color", () => {
     const { container } = render(defaultLabel);
     expect(container.firstElementChild).toHaveStyle(`background-color: ''`);
   });
