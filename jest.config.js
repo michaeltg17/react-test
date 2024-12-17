@@ -1,7 +1,7 @@
 module.exports = {
   transform: {
     "^.+\\.jsx?$": "babel-jest",
-    "^.+\\.css$": "jest-transform-css"
+    "^.+\\.scss$": '<rootDir>/src/testing/transform/jest-transform-dart-scss.js',
   },
   testEnvironment: "jsdom"
 };

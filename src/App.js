@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./styles.scss";
 import DangerLabel from "./DangerLabel";
 import DefaultLabel from "./DefaultLabel";
 import React from 'react';
