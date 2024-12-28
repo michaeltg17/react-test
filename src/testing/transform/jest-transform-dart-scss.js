@@ -6,6 +6,26 @@ const stripIndent = require("common-tags/lib/stripIndent");
 const THIS_FILE = fs.readFileSync(__filename);
 const sass = require('sass');
 
+const defaultImporter = {
+  findFileUrl(url) {
+    // Handle the special case for 'imported'
+    if (url === 'imported') {
+      // Return a URL to the content for 'imported'
+      return new URL('data:text/scss,$danger-color: #e74c3c;');
+    }
+    return null; // Let Sass handle other imports
+  },
+};
+
+const relativeUrlImporter = {
+  // An importer that redirects relative URLs starting with "~" to
+  // `node_modules`.
+  findFileUrl(url) {
+    if (!url.startsWith('~')) return null;
+    return new URL(url.substring(1), pathToFileURL('node_modules'));
+  }
+};
+
 module.exports = {
   getCacheKey: (fileData, filename, configString, options) => {
     // Jest 27 passes a single options bag which contains `configString` rather than as a separate argument
@@ -35,7 +55,7 @@ module.exports = {
         .digest("hex")
     );
   },
-
+  
   process: (src, filename, config, options) => {
     // skip when plain CSS is used
     // You can pass config to the transformer in jest.config.js like so:
@@ -49,9 +69,9 @@ module.exports = {
     if (!useModules) {
       if (filename.match(/\.scss$/)) {
         // convert SCSS to CSS 
-        const resultSass = sass.renderSync({
-          data: src
-        })
+        const resultSass = sass.compileString(src, {
+          importers: [relativeUrlImporter, defaultImporter]
+        });
         return stripIndent`
           const styleInject = require('style-inject');
 
